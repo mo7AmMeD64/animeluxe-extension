@@ -19,7 +19,7 @@ jobs:
           echo "include ':src'" > settings.gradle
           
           # إجبار ملف build.gradle الرئيسي على نسخة محددة
-          # مع إضافة GitHub token لـ JitPack لحل مشكلة 401 Unauthorized
+          # JITPACK_TOKEN = PAT من حساب لديه وصول لـ aniyomiorg/aniyomi-lib
           cat <<EOF > build.gradle
           buildscript {
               repositories { google(); mavenCentral() }
@@ -31,7 +31,7 @@ jobs:
                   mavenCentral()
                   maven {
                       url "https://jitpack.io"
-                      credentials { username = System.getenv("GITHUB_TOKEN") ?: "" }
+                      credentials { username = System.getenv("JITPACK_TOKEN") ?: "" }
                   }
               }
           }
@@ -47,7 +47,7 @@ jobs:
             ls -la src/
           fi
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          JITPACK_TOKEN: ${{ secrets.JITPACK_TOKEN }}
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
@@ -57,7 +57,7 @@ jobs:
       - name: Build APK
         run: gradle :src:assembleDebug --stacktrace
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          JITPACK_TOKEN: ${{ secrets.JITPACK_TOKEN }}
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
