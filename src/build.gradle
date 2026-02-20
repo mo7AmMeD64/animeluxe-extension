@@ -1,25 +1,16 @@
-plugins {
-    id 'com.android.application'
-    id 'kotlin-android'
-    id 'kotlinx-serialization'
-}
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlinx-serialization'
 
 android {
     namespace "eu.kanade.tachiyomi.animeextension.ar.animeluxe"
     compileSdk 33
-
     defaultConfig {
         applicationId "eu.kanade.tachiyomi.animeextension.ar.animeluxe"
         minSdk 21
         targetSdk 33
         versionCode 1
         versionName "1.0.0"
-    }
-
-    buildTypes {
-        release {
-            minifyEnabled false
-        }
     }
 }
 
