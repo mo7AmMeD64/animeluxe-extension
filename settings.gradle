@@ -1,0 +1,3 @@
+rootProject.name = "animeluxe-extension"
+include ":extension"
+project(":extension").projectDir = new File("src")
