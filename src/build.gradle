@@ -1,20 +1,18 @@
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'org.jetbrains.kotlin.plugin.serialization'
-
-android {
-    namespace "eu.kanade.tachiyomi.animeextension.ar.animeluxe"
-    compileSdk 33
-    defaultConfig {
-        applicationId "eu.kanade.tachiyomi.animeextension.ar.animeluxe"
-        minSdk 21
-        targetSdk 33
-        versionCode 1
-        versionName "1.0.0"
+allprojects {
+    repositories {
+        mavenCentral()
+        google()
+        maven(url = "https://jitpack.io")
     }
 }
 
-dependencies {
-    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1"
-    compileOnly "com.github.aniyomiorg:aniyomi-lib:1.4"
+buildscript {
+    repositories {
+        mavenCentral()
+        google()
+        maven(url = "https://jitpack.io")
+    }
+    dependencies {
+        classpath(libs.gradle.kotlin)
+    }
 }
