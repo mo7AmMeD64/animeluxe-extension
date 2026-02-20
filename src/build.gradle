@@ -1,0 +1,21 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlinx-serialization'
+
+android {
+    namespace "eu.kanade.tachiyomi.animeextension.ar.animeluxe"
+    compileSdk 33
+    defaultConfig {
+        applicationId "eu.kanade.tachiyomi.animeextension.ar.animeluxe"
+        minSdk 21
+        targetSdk 33
+        versionCode 1
+        versionName "1.0.0"
+    }
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1"
+    // هذه المكتبات الضرورية للتواصل مع التطبيق
+    compileOnly "com.github.aniyomiorg:aniyomi-lib:1.4" 
+}
