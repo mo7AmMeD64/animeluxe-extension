@@ -15,16 +15,18 @@ jobs:
           distribution: 'temurin'
 
       - name: Setup Gradle Wrapper
-        # هذا الجزء سيقوم بإنشاء ملف gradlew المفقود تلقائياً
-        run: gradle wrapper --gradle-version 8.1.1
+        # نجبر النظام على استخدام نسخة 8.1.1 المستقرة لتجنب مشاكل Gradle 9
+        run: gradle wrapper --gradle-version 8.1.1 --distribution-type all
 
       - name: Grant Execute Permission for Gradle
         run: chmod +x gradlew
 
       - name: Build APK with Gradle
-        run: ./gradlew assembleDebug
+        # نستخدم --stacktrace لإظهار تفاصيل الخطأ في حال حدوثه (للمساعدة في التشخيص)
+        run: ./gradlew assembleDebug --stacktrace
 
       - name: Upload APK Artifact
+        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: AnimeLuxe-Extension-APK
