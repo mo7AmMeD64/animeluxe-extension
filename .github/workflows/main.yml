@@ -24,6 +24,14 @@ jobs:
           allprojects { repositories { google(); mavenCentral(); maven { url "https://jitpack.io" } } }
           EOF
 
+          # تصحيح مسار sourceSets في build.gradle الخاص بالوحدة
+          if grep -q "sourceSets" src/build.gradle; then
+            echo "sourceSets already defined, skipping"
+          else
+            # إضافة sourceSets لتصحيح المسار المزدوج src/src/main
+            sed -i '/^android {/a\    sourceSets {\n        main {\n            manifest.srcFile "src/main/AndroidManifest.xml"\n            java.srcDirs = ["src/main/java"]\n            res.srcDirs = ["src/main/res"]\n        }\n    }' src/build.gradle
+          fi
+
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
         with:
