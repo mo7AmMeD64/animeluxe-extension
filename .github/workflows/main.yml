@@ -24,12 +24,16 @@ jobs:
           allprojects { repositories { google(); mavenCentral(); maven { url "https://jitpack.io" } } }
           EOF
 
-          # تصحيح مسار sourceSets في build.gradle الخاص بالوحدة
-          if grep -q "sourceSets" src/build.gradle; then
-            echo "sourceSets already defined, skipping"
+          # تصحيح مشكلة المسار المزدوج src/src/main
+          # Gradle يتوقع الملف في src/src/main لكنه موجود في src/main
+          # الحل: إنشاء المجلد المتوقع ونسخ الملفات إليه
+          mkdir -p src/src/main
+          if [ -f src/main/AndroidManifest.xml ]; then
+            cp -r src/main/* src/src/main/
+            echo "Copied main sources to src/src/main/"
           else
-            # إضافة sourceSets لتصحيح المسار المزدوج src/src/main
-            sed -i '/^android {/a\    sourceSets {\n        main {\n            manifest.srcFile "src/main/AndroidManifest.xml"\n            java.srcDirs = ["src/main/java"]\n            res.srcDirs = ["src/main/res"]\n        }\n    }' src/build.gradle
+            echo "ERROR: src/main/AndroidManifest.xml not found!"
+            ls -la src/
           fi
 
       - name: Setup Gradle
