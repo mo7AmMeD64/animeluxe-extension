@@ -1,4 +1,4 @@
-name: Build Extension
+name: Final Build Fix
 on: [push, workflow_dispatch]
 jobs:
   build:
@@ -9,14 +9,31 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
+      
+      - name: Auto-Fix Configs
+        run: |
+          # إعادة إنشاء ملف settings.gradle لضمان المسارات
+          echo "include ':src'" > settings.gradle
+          
+          # إجبار ملف build.gradle الرئيسي على نسخة محددة
+          cat <<EOF > build.gradle
+          buildscript {
+              repositories { google(); mavenCentral() }
+              dependencies { classpath 'com.android.tools.build:gradle:8.1.1'; classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.21' }
+          }
+          allprojects { repositories { google(); mavenCentral(); maven { url "https://jitpack.io" } } }
+          EOF
+
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
         with:
           gradle-version: 8.1.1
+
       - name: Build APK
-        run: gradle assembleDebug --stacktrace
+        run: gradle :src:assembleDebug --stacktrace
+
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: AnimeLuxe-APK
-          path: "**/build/outputs/apk/debug/*.apk"
+          name: AnimeLuxe-Success-APK
+          path: "src/build/outputs/apk/debug/*.apk"
